@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retail Candy Shopee</title>
+
+    <style>
+        #form_div {
+            background-color: rgba(255, 255, 254, 0.447);
+
+        }
+
+        #container {
+            margin-top: 50px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            border-radius: 4px;
+            background-color: rgba(217, 175, 240, 0.645);
+        }
+
+        #btn {
+            background-color: green;
+            font-weight: bold;
+            border-radius: 5px;
+            color: white;
+        }
+
+        #Cname {
+            background-color: rgb(180, 180, 234);
+        }
+
+        nav {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            background-color: blueviolet;
+        }
+
+        .nav {
+            background-color: rgba(71, 241, 96, 0.773);
+            padding-top: 10px;
+            padding-bottom: 10px;
+            position: sticky;
+        }
+
+        nav button {
+            background-color: rgb(221, 131, 131);
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        nav button#shopekeeper {
+            position: absolute;
+            right: 0%;
+        }
+
+        img.background {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            z-index: -1;
+            width: 100%;
+            height: 100%;
+            filter: blur(3px);
+        }
+
+        p {
+            color: rgb(255, 255, 255);
+            font-family: cursive;
+            font-weight: bold;
+        }
+
+        marquee {
+            background-color: antiquewhite;
+            color: rgb(71, 124, 238);
+        }
+    </style>
+</head>
+
+<body>
+
+    <marquee behavior="left" direction="left">
+        <h3>Welcome to our candy shopee...!</h3>
+    </marquee>
+
+    <img class="background" src="candy-stock-image.webp" alt="candy">
+    <div class="nav">
+        <nav>
+            <button id="user" onclick="forBuyer()">Customer Page</button>
+            <button id="shopekeeper" onclick="forSeller()">Shopekeeper Page</button>
+        </nav>
+    </div>
+    <div id="main_div">
+
+        <p>Candy, also called sweets (British English) or lollies (Australian English, New Zealand English), is a
+            confection that features sugar as a principal ingredient. The category, called sugar confectionery,
+            encompasses
+            any sweet confection, including chocolate, chewing gum, and sugar candy. Vegetables, fruit, or nuts which
+            have
+            been glazed and coated with sugar are said to be candied.
+
+            Physically, candy is characterized by the use of a significant amount of sugar or sugar substitutes. Unlike
+            a
+            cake or loaf of bread that would be shared among many people, candies are usually made in smaller pieces.
+            However, the definition of candy also depends upon how people treat the food. Unlike sweet pastries served
+            for a
+            dessert course at the end of a meal, candies are normally eaten casually, often with the fingers, as a snack
+            between meals. Each culture has its own ideas of what constitutes candy rather than dessert. The same food
+            may
+            be a candy in one culture and a dessert in another.</p>
+        <div id="form_div">
+            <div id="container">
+                <form action="#" onsubmit="saveDetails(event)" id="candies">
+            </div>
+            <label for="Candeis"><b><i>CandiName</i></b></label>
+            <select name="CandiName" id="Cname" style="border-radius: 4px">
+                <option value="Eclair">Eclair</option>
+                <option value="KissMe">KissMe</option>
+                <option value="KitKat">KitKat</option>
+                <option value="Snickers">Snickers</option>
+                <option value="Crunch">Crunch</option>
+                <option value="Alpenliebe">Alpenliebe</option>
+                <option value="Kopiko">Kopiko</option>
+                <option value="Cadbury">Cadbury</option>
+            </select>
+            <b><i>Description :</i></b> <input type="text" id="Description" placeholder="Description">
+            <b><i>Price :</i></b> <input type="number" id="price" name="Price" min="1" max="150">
+            <b><i>Quantity :</i></b> <input type="number" id="quantity" name="quantity" min="1" max="1000">
+            <button id="btn" onsubmit=""><b><i>Add Item</i></b></button>
+
+        </div>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.4/axios.min.js"></script>
+
+    <script>
+
+        var crudAPI = "5dc553ab615e4459bd441f4286cfe830"
+
+
+        function saveDetails(event) {
+            event.preventDefault();
+
+            let candiname = document.getElementById('Cname').value;
+            let description = document.getElementById('Description').value;
+            let price = document.getElementById('price').value;
+            let quantity = document.getElementById('quantity').value;
+
+            const obj = {
+                candiname,
+                description,
+                price,
+                quantity
+            };
+
+
+            axios.post(`https://crudcrud.com/api/${crudAPI}/candyData`, obj)
+                .then((response) => {
+                    detailsOnScreen(response.data)
+                }).catch(err => {
+                    document.body.innerHTML = document.body.innerHTML + "<h4>Something went wrong</h4>"
+                    console.log(err)
+                })
+        }
+
+
+        window.addEventListener("DOMContentLoaded", () => {
+            axios.get(`https://crudcrud.com/api/${crudAPI}/candyData`)
+
+                .then(response => {
+                    for (let i = 0; i < response.data.length; i++) {
+                        detailsOnScreen(response.data[i])
+                        // console.log(response.data[i]._id)
+                    }
+
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        })
+
+        function detailsOnScreen(obj) {
+
+            const parentElem = document.getElementById('main_div');
+
+            // creating new li element
+            const li = document.createElement('li');
+            li.classList = obj._id;
+            li.style.marginBlock = '20px'
+            li.innerHTML = obj.candiname + " - " + obj.description + " - " + "Rs " + obj.price + " - " + obj.quantity
+
+            // adding BUY 2 button
+            const Buy2 = document.createElement('input');
+            Buy2.type = "button";
+            Buy2.classList = "b2"
+            Buy2.style.marginLeft = "5px"
+            Buy2.style.borderRadius = "4px"
+            Buy2.style.backgroundColor = "rgb(180, 80, 34)"
+            Buy2.value = "Buy2"
+
+            // adding buy 5 button
+            const Buy5 = document.createElement('input');
+            Buy5.type = "button";
+            Buy5.classList = "b5"
+            Buy5.style.marginLeft = "5px"
+            Buy5.style.borderRadius = "4px"
+            Buy5.style.backgroundColor = "rgb(180, 80, 34)"
+            Buy5.value = "Buy5"
+
+            // adding functionality of 
+            Buy5.onclick = (e) => {
+                var li = e.target.parentElement;
+
+                // console.log(li.textContent)
+                const arr = li.textContent.split(" - ")
+                // console.log(arr)
+                const newObj = {
+                    candiname: arr[0],
+                    description: arr[1],
+                    price: arr[2].replace("Rs ", ""),
+                    quantity: (parseInt(arr[3]))
+
+                }
+
+                if (e.target.classList.contains("b5")) {
+
+                    var objKey = li.classList[0]
+                    console.log(objKey)
+
+                    if (newObj.quantity >= 5) {
+                        newObj.quantity = newObj.quantity - 5;
+                        axios.put(`https://crudcrud.com/api/${crudAPI}/candyData/${objKey}`, newObj).then((response) => {
+                            e.target.parentElement.innerText = newObj.candiname + " - " + newObj.description + " - " + "Rs " + newObj.price + " - " + newObj.quantity;
+
+                            li.appendChild(Buy2);
+                            li.appendChild(Buy5);
+                            parentElem.appendChild(li);
+                            console.log(newObj.quantity)
+
+                        }).catch(err => {
+                            console.log(err)
+                        })
+                    } else {
+                        e.target.parentElement.innerText = `You can buy 2 candy or Stock is running out of ${newObj.candiname} candy, Please buy other.`
+                    }
+
+                }
+
+            }
+
+            Buy2.onclick = (e) => {
+                var li = e.target.parentElement;
+                console.log(li.textContent)
+                const arr = li.textContent.split(" - ")
+                console.log(arr)
+                const newObj = {
+                    candiname: arr[0],
+                    description: arr[1],
+                    price: arr[2].replace("Rs ", ""),
+                    quantity: (parseInt(arr[3]))
+
+                }
+
+                if (e.target.classList.contains("b2")) {
+
+                    var objKey = li.classList[0]
+                    console.log(objKey)
+                    if (newObj.quantity >= 2) {
+                        newObj.quantity = newObj.quantity - 2;
+
+                        axios.put(`https://crudcrud.com/api/${crudAPI}/candyData/${objKey}`, newObj).then((response) => {
+
+                            e.target.parentElement.innerText = newObj.candiname + " - " + newObj.description + " - " + "Rs " + newObj.price + " - " + newObj.quantity;
+
+                            li.appendChild(Buy2);
+                            li.appendChild(Buy5);
+                            parentElem.appendChild(li);
+                        }).catch(err => {
+                            console.log(err)
+                        })
+                    } else {
+                        e.target.parentElement.innerText = `Stock is running out of ${newObj.candiname} candy, Please buy other.`
+
+                        setTimeout(() => {
+                            parentElem.removeChild(li)
+                        }, 2000)
+                    }
+
+                }
+
+            }
+
+            li.appendChild(Buy2);
+            li.appendChild(Buy5);
+            parentElem.appendChild(li);
+
+        }
+
+        function forBuyer() {
+            let sellerPg = document.getElementById('form_div');
+            sellerPg.style.display = 'none'
+        }
+
+
+
+    </script>
+</body>
+
+</html>
