@@ -1,0 +1,70 @@
+#form_div {
+    background-color: rgba(255, 255, 254, 0.447);
+
+}
+
+#container {
+    margin-top: 50px;
+    margin-bottom: 20px;
+}
+
+input {
+    border-radius: 4px;
+    background-color: rgba(217, 175, 240, 0.645);
+}
+
+#btn {
+    background-color: green;
+    font-weight: bold;
+    border-radius: 5px;
+    color: white;
+}
+
+#Cname {
+    background-color: rgb(180, 180, 234);
+}
+
+nav {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: blueviolet;
+}
+
+.nav {
+    background-color: rgba(71, 241, 96, 0.773);
+    padding-top: 10px;
+    padding-bottom: 10px;
+    position: sticky;
+}
+
+nav button {
+    background-color: rgb(221, 131, 131);
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+nav button#shopekeeper {
+    position: absolute;
+    right: 0%;
+}
+
+img.background {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    filter: blur(3px);
+}
+
+p {
+    color: rgb(255, 255, 255);
+    font-family: cursive;
+    font-weight: bold;
+}
+
+marquee {
+    background-color: antiquewhite;
+    color: rgb(71, 124, 238);
+}

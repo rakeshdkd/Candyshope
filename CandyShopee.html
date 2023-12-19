@@ -6,79 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Retail Candy Shopee</title>
+<!-- Added style sheet  -->
+    <link rel="stylesheet" href="index.css">
 
-    <style>
-        #form_div {
-            background-color: rgba(255, 255, 254, 0.447);
-
-        }
-
-        #container {
-            margin-top: 50px;
-            margin-bottom: 20px;
-        }
-
-        input {
-            border-radius: 4px;
-            background-color: rgba(217, 175, 240, 0.645);
-        }
-
-        #btn {
-            background-color: green;
-            font-weight: bold;
-            border-radius: 5px;
-            color: white;
-        }
-
-        #Cname {
-            background-color: rgb(180, 180, 234);
-        }
-
-        nav {
-            margin-top: 10px;
-            margin-bottom: 10px;
-            background-color: blueviolet;
-        }
-
-        .nav {
-            background-color: rgba(71, 241, 96, 0.773);
-            padding-top: 10px;
-            padding-bottom: 10px;
-            position: sticky;
-        }
-
-        nav button {
-            background-color: rgb(221, 131, 131);
-            border-radius: 5px;
-            font-weight: bold;
-        }
-
-        nav button#shopekeeper {
-            position: absolute;
-            right: 0%;
-        }
-
-        img.background {
-            position: absolute;
-            left: 0px;
-            top: 0px;
-            z-index: -1;
-            width: 100%;
-            height: 100%;
-            filter: blur(3px);
-        }
-
-        p {
-            color: rgb(255, 255, 255);
-            font-family: cursive;
-            font-weight: bold;
-        }
-
-        marquee {
-            background-color: antiquewhite;
-            color: rgb(71, 124, 238);
-        }
-    </style>
 </head>
 
 <body>
@@ -91,7 +21,7 @@
     <div class="nav">
         <nav>
             <button id="user" onclick="forBuyer()">Customer Page</button>
-            <button id="shopekeeper" onclick="forSeller()">Shopekeeper Page</button>
+            <button id="shopekeeper">Shopekeeper Page</button>
         </nav>
     </div>
     <div id="main_div">
@@ -140,10 +70,10 @@
 
     <script>
 
-        var crudAPI = "5dc553ab615e4459bd441f4286cfe830"
+        var crudAPI = "b6f8fae5a52041629e9fad0a11ea0c9c"
 
 
-        function saveDetails(event) {
+        async function saveDetails(event) {
             event.preventDefault();
 
             let candiname = document.getElementById('Cname').value;
@@ -157,21 +87,23 @@
                 price,
                 quantity
             };
+            // }
 
-
-            axios.post(`https://crudcrud.com/api/${crudAPI}/candyData`, obj)
-                .then((response) => {
+            const z = await axios.post(`https://crudcrud.com/api/${crudAPI}/candyData`, obj)
+                .then
+                ((response) => {
                     detailsOnScreen(response.data)
-                }).catch(err => {
+                })
+                .catch
+                (err => {
                     document.body.innerHTML = document.body.innerHTML + "<h4>Something went wrong</h4>"
                     console.log(err)
                 })
         }
 
-
         window.addEventListener("DOMContentLoaded", () => {
-            axios.get(`https://crudcrud.com/api/${crudAPI}/candyData`)
 
+            axios.get(`https://crudcrud.com/api/${crudAPI}/candyData`)
                 .then(response => {
                     for (let i = 0; i < response.data.length; i++) {
                         detailsOnScreen(response.data[i])
@@ -184,6 +116,8 @@
                 })
         })
 
+
+
         function detailsOnScreen(obj) {
 
             const parentElem = document.getElementById('main_div');
@@ -192,7 +126,7 @@
             const li = document.createElement('li');
             li.classList = obj._id;
             li.style.marginBlock = '20px'
-            li.innerHTML = obj.candiname + " - " + obj.description + " - " + "Rs " + obj.price + " - " + obj.quantity
+            li.innerText = obj.candiname + " - " + obj.description + " - " + "Rs " + obj.price + " - " + obj.quantity
 
             // adding BUY 2 button
             const Buy2 = document.createElement('input');
@@ -213,12 +147,13 @@
             Buy5.value = "Buy5"
 
             // adding functionality of 
+
             Buy5.onclick = (e) => {
                 var li = e.target.parentElement;
-
                 // console.log(li.textContent)
+                console.log(li)
                 const arr = li.textContent.split(" - ")
-                // console.log(arr)
+                console.log(arr)
                 const newObj = {
                     candiname: arr[0],
                     description: arr[1],
@@ -227,14 +162,14 @@
 
                 }
 
-                if (e.target.classList.contains("b5")) {
 
-                    var objKey = li.classList[0]
-                    console.log(objKey)
+                var objKey = li.classList[0]
+                console.log(objKey)
 
-                    if (newObj.quantity >= 5) {
-                        newObj.quantity = newObj.quantity - 5;
-                        axios.put(`https://crudcrud.com/api/${crudAPI}/candyData/${objKey}`, newObj).then((response) => {
+                if (newObj.quantity >= 5) {
+                    newObj.quantity = newObj.quantity - 5;
+                    axios.put(`https://crudcrud.com/api/${crudAPI}/candyData/${objKey}`, newObj)
+                        .then((response) => {
                             e.target.parentElement.innerText = newObj.candiname + " - " + newObj.description + " - " + "Rs " + newObj.price + " - " + newObj.quantity;
 
                             li.appendChild(Buy2);
@@ -245,11 +180,10 @@
                         }).catch(err => {
                             console.log(err)
                         })
-                    } else {
-                        e.target.parentElement.innerText = `You can buy 2 candy or Stock is running out of ${newObj.candiname} candy, Please buy other.`
-                    }
-
+                } else {
+                    e.target.parentElement.innerText = `You can buy 2 candy or Stock is running out of ${newObj.candiname} candy, Please buy other.`
                 }
+
 
             }
 
